@@ -76,7 +76,7 @@ class LinkedList<E> {
   }
 
   /// Insert a new node after the known node
-  /// Has O(1) time complexity (linear time)
+  /// Has O(1) time complexity (constants time)
   /// But there is no option to inserting before a node
   /// Because we have no reference to the previous node
   Node<E> insertAfter(Node<E> node, E value) {
