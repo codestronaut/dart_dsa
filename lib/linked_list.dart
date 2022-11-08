@@ -16,7 +16,7 @@ class Node<T> {
   }
 }
 
-class LinkedList<E> {
+class LinkedList<E> extends Iterable<E> {
   /// LinkedList characteristics
   /// head: the first node of the list
   /// tail: the last node of the list
@@ -24,6 +24,7 @@ class LinkedList<E> {
   Node<E>? tail;
 
   /// A LinkedList determined is empty if the head is null
+  @override
   bool get isEmpty => head == null;
 
   @override
@@ -89,5 +90,97 @@ class LinkedList<E> {
 
     node.next = Node(value: value, next: node.next);
     return node.next!;
+  }
+
+  /// Pop will remove node from the front of the list
+  E? pop() {
+    /// Getting the current head value
+    /// Which is the popped value
+    final value = head?.value;
+
+    /// Set new head with the next node
+    head = head?.next;
+
+    /// If the list is empty, then set the tail to null
+    if (isEmpty) {
+      tail = null;
+    }
+    return value;
+  }
+
+  /// Remove the last node from list
+  /// since removeLast required to loop through the list
+  /// to find the node before tail
+  /// this operation has O(n) time complexity
+  E? removeLast() {
+    /// If the list has only 1 node
+    /// Then just pop the node
+    if (head?.next == null) return pop();
+
+    /// Loop though list until reach the node before tail
+    /// We use the next reference of the node to remove last element
+    /// Which is tail
+    var current = head;
+    while (current?.next != tail) {
+      current = current?.next;
+    }
+
+    /// Get the tail value
+    final value = tail?.value;
+
+    /// Rewire the list nodes
+    /// Tail is now current (node before tail)
+    /// Also, don't forget to make the tail next reference to null
+    /// Since this is the last node
+    tail = current;
+    tail?.next = null;
+    return value;
+  }
+
+  /// Remove a node after another node
+  E? removeAfter(Node<E> node) {
+    /// Get the node value
+    final value = node.value;
+
+    /// If the next reference of node is equal tail
+    /// Then tail now is node
+    if (node.next == tail) {
+      tail = node;
+    }
+
+    /// Rewire the list nodes
+    /// Because we remove node after specified node
+    /// Then the next reference of node is next-next node
+    node.next = node.next?.next;
+    return value;
+  }
+
+  @override
+  Iterator<E> get iterator => _LinkedListIterator(this);
+}
+
+class _LinkedListIterator<E> implements Iterator<E> {
+  _LinkedListIterator(LinkedList<E> list) : _list = list;
+  final LinkedList<E> _list;
+
+  Node<E>? _currentNode;
+
+  @override
+  E get current => _currentNode!.value;
+
+  bool _firstPass = true;
+
+  @override
+  bool moveNext() {
+    if (_list.isEmpty) return false;
+
+    if (_firstPass) {
+      _currentNode = _list.head;
+      _firstPass = false;
+    } else {
+      _currentNode = _currentNode?.next;
+    }
+
+    return _currentNode != null;
   }
 }

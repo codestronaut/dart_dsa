@@ -63,14 +63,11 @@ bool balanceParentheses(String text) {
 /// Linked List example
 void exampleLinkedList() {
   final list = LinkedList<int>();
-  list.append(1);
-  list.append(2);
-  list.append(3);
+  list.push(3);
+  list.push(2);
+  list.push(1);
 
-  print('Before: $list');
-
-  var middleNode = list.nodeAt(1)!;
-  list.insertAfter(middleNode, 5);
-
-  print('After: $list');
+  for (final item in list) {
+    print(item);
+  }
 }
