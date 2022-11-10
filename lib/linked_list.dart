@@ -28,6 +28,9 @@ class LinkedList<E> extends Iterable<E> {
   bool get isEmpty => head == null;
 
   @override
+  bool get isNotEmpty => !isEmpty;
+
+  @override
   String toString() {
     if (head == null) return 'Empty list';
     return head.toString();
@@ -155,6 +158,8 @@ class LinkedList<E> extends Iterable<E> {
     return value;
   }
 
+  /// Give the ability to loop through linked list
+  /// By extending it with Iterable
   @override
   Iterator<E> get iterator => _LinkedListIterator(this);
 }
@@ -170,6 +175,8 @@ class _LinkedListIterator<E> implements Iterator<E> {
 
   bool _firstPass = true;
 
+  /// Tell the iterable how to move though the collection
+  /// In this case a linked list
   @override
   bool moveNext() {
     if (_list.isEmpty) return false;
